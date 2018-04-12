@@ -1,0 +1,3 @@
+comtypes==1.1.1
+git+git://github.com/Kinect/PyKinect2.git@c86d575175edf5fc0834590acdfb82b55b5ccd96
+numpy

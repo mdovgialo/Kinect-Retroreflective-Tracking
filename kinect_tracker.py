@@ -121,9 +121,14 @@ while go:
 
     dilation = cv2.dilate(frame_thr, kernel, iterations=10)
     # print(frame_depth.dtype)
+
+
+    frame_depth[frame_depth>0] = 2**16 - frame_depth[frame_depth>0]
+
     frame_depth = cv2.medianBlur(frame_depth, 3)
     blured_depth = cv2.dilate(frame_depth, kernel_depth, iterations=1)
 
+    blured_depth[blured_depth > 0] = 2 ** 16 - blured_depth[blured_depth > 0]
     # blured_depth = frame_depth
     # blured_depth = cv2.medianBlur(frame_depth, 5)
 
@@ -166,4 +171,3 @@ while go:
 frame = s.get_infrared()
 pb.hist(frame.flatten(), bins=100)
 pb.show()
-

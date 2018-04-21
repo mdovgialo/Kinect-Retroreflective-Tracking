@@ -14,6 +14,9 @@ class InfraredSource:
         self.color_width = self._kinect.color_frame_desc.Width
         self.color_height = self._kinect.color_frame_desc.Height
 
+    def get_new_frames_available(self):
+        return self._kinect.has_new_color_frame() and self._kinect.has_new_depth_frame() and self._kinect.has_new_infrared_frame()
+
     def get_infrared(self):
         return self._kinect.get_last_infrared_frame().reshape(self.infrared_height, self.infrared_width)
 

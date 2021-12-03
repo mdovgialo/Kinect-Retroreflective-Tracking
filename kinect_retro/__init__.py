@@ -48,6 +48,24 @@ class InfraredSource:
         del pf_csps, csps, ptr_depth, TYPE_CameraSpacePoint_Array
         return data
 
+    def get_points_color(self, frame):
+        L = frame.size
+        S=1080*1920
+        TYPE_CameraSpacePoint_Array = PyKinectV2._CameraSpacePoint * S
+        csps = TYPE_CameraSpacePoint_Array()
+        ptr_depth = np.ctypeslib.as_ctypes(frame.flatten())
+        error_state = self._kinect._mapper.MapColorFrameToCameraSpace(
+            L, ptr_depth,
+            S, csps)
+        if error_state:
+            raise Exception("Could not map depth frame to camera space! " + str(error_state))
+
+        pf_csps = ctypes.cast(csps, ctypes.POINTER(ctypes.c_float))
+        data = np.copy(np.ctypeslib.as_array(pf_csps, shape=(self.color_height, self.color_width,
+                                                             3)))
+        del pf_csps, csps, ptr_depth, TYPE_CameraSpacePoint_Array
+        return data
+
     def get_point_location(self, x, y, depth):  # from depth to camera space
         # depth - uint16
         # x - y - pixel position
